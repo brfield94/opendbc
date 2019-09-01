@@ -131,12 +131,12 @@ BO_ 643 PRE_COLLISION: 7 DSU
  SG_ CHECKSUM : 55|8@0+ (1,0) [0|255] "" XXX
 
 BO_ 740 STEERING_LKA: 5 XXX
- SG_ LKA_STATE : 31|8@0+ (1,0) [0|255] "" XXX
  SG_ STEER_REQUEST : 0|1@0+ (1,0) [0|1] "" XXX
  SG_ COUNTER : 6|6@0+ (1,0) [0|63] "" XXX
  SG_ SET_ME_1 : 7|1@0+ (1,0) [0|1] "" XXX
  SG_ STEER_TORQUE_CMD : 15|16@0- (1,0) [0|65535] "" XXX
  SG_ CHECKSUM : 39|8@0+ (1,0) [0|255] "" XXX
+ SG_ LKA_STATE : 31|8@0+ (1,0) [0|255] "" XXX
 
 BO_ 742 LEAD_INFO: 8 DSU
  SG_ CHECKSUM : 63|8@0+ (1,0) [0|255] "" HCU
@@ -177,14 +177,13 @@ BO_ 951 ESP_CONTROL: 8 ESP
  SG_ BRAKE_LIGHTS_ACC : 18|1@0+ (1,0) [0|1] "" XXX
 
 BO_ 1041 ACC_HUD: 8 DSU
- SG_ FCW : 4|1@0+ (1,0) [0|1] "" XXX
  SG_ SET_ME_X20 : 15|8@0+ (1,0) [0|1] "" XXX
  SG_ SET_ME_X10 : 39|8@0+ (1,0) [0|1] "" XXX
  SG_ SET_ME_X80 : 55|8@0+ (1,0) [0|1] "" XXX
+ SG_ FCW : 4|1@0+ (1,0) [0|1] "" XXX
+ SG_ ON/OFF : 6|1@0+ (1,0) [0|1] "" XXX
 
 BO_ 1042 LKAS_HUD: 8 XXX
- SG_ BARRIERS : 1|2@0+ (1,0) [0|3] "" XXX
- SG_ RIGHT_LINE : 3|2@0+ (1,0) [0|3] "" XXX
  SG_ LEFT_LINE : 5|2@0+ (1,0) [0|3] "" XXX
  SG_ SET_ME_X01 : 7|2@0+ (1,0) [0|3] "" XXX
  SG_ SET_ME_X01_2 : 11|2@0+ (1,0) [0|3] "" XXX
@@ -197,6 +196,8 @@ BO_ 1042 LKAS_HUD: 8 XXX
  SG_ SET_ME_X2C : 47|8@0+ (1,0) [0|1] "" XXX
  SG_ SET_ME_X38 : 55|8@0+ (1,0) [0|1] "" XXX
  SG_ SET_ME_X02 : 63|8@0+ (1,0) [0|1] "" XXX
+ SG_ BARRIERS : 1|2@0+ (1,0) [0|3] "" XXX
+ SG_ RIGHT_LINE : 3|2@0+ (1,0) [0|3] "" XXX
 
 BO_ 1408 VIN_PART_1: 8 CGW
  SG_ VIN_1 : 7|8@0+ (1,0) [0|0] "" XXX
@@ -316,6 +317,11 @@ BO_ 800 SHIFTER: 8 XXX
 BO_ 550 BRAKE PEDAL: 8 XXX
  SG_ BRAKE_PEDAL : 37|1@0+ (1,0) [0|1] "" XXX
 
+BO_ 1014 BSM: 8 XXX
+ SG_ ON/OFF : 7|1@0+ (1,0) [0|1] "" XXX
+ SG_ SENSITIVITY : 16|4@1+ (1,0) [0|4] "" XXX
+ SG_ BRIGHTNESS : 21|1@0+ (1,0) [0|1] "" XXX
+
 
 
 
@@ -334,6 +340,7 @@ CM_ SG_ 643 BRAKE_STATUS "only used on cars that use this msg for cruise control
 CM_ SG_ 643 PRECOLLISION_ACTIVE "set 0.5s before any braking";
 CM_ SG_ 921 UI_SET_SPEED "set speed shown in UI with user set unit";
 CM_ SG_ 951 BRAKE_LIGHTS_ACC "brake lights when ACC commands decel";
+CM_ SG_ 1041 ON/OFF "0=PCS ON 1=OFF";
 CM_ SG_ 1042 REPEATED_BEEPS "recommended for fcw and other important alerts";
 CM_ SG_ 1161 SPDVAL1 "Numbers 0-199 is displayed, 200-254 displays circle without number and 255 is for no limit.";
 CM_ SG_ 1161 SPDVAL2 "conditional speed value 70"
@@ -370,16 +377,18 @@ CM_ SG_ 865 BRAKE "1=PRESSED";
 CM_ SG_ 865 CLUTCH "0=PRESSED";
 CM_ SG_ 800 NEUTRAL "1=N";
 CM_ SG_ 550 BRAKE_PEDAL "1=PRESSED";
+CM_ SG_ 1014 ON/OFF "1=ON";
+CM_ SG_ 1014 BRIGHTNESS "1=BRIGHT 0=LOW";
 VAL_ 513 STATE 5 "FAULT_TIMEOUT" 4 "FAULT_STARTUP" 3 "FAULT_SCE" 2 "FAULT_SEND" 1 "FAULT_BAD_CHECKSUM" 0 "NO_FAULT" ;
 VAL_ 467 LOW_SPEED_LOCKOUT 2 "low speed locked" 1 "ok" ;
 VAL_ 614 STATE 3 "enabled" 1 "disabled" ;
 VAL_ 614 DIRECTION_CMD 3 "right" 2 "center" 1 "left" ;
 VAL_ 643 STATE 0 "normal" 1 "adaptive_cruise_control" 3 "emergency_braking" ;
 VAL_ 921 CRUISE_CONTROL_STATE 2 "disabled" 11 "hold" 10 "hold_waiting_user_cmd" 6 "enabled" 5 "faulted" ;
-VAL_ 1042 BARRIERS 3 "both" 2 "right" 1 "left" 0 "none" ;
-VAL_ 1042 RIGHT_LINE 3 "orange" 2 "faded" 1 "solid" 0 "none" ;
 VAL_ 1042 LEFT_LINE 3 "orange" 2 "faded" 1 "solid" 0 "none" ;
 VAL_ 1042 LDA_ALERT 3 "hold with continuous beep" 2 "LDA unavailable" 1 "hold" 0 "none" ;
+VAL_ 1042 BARRIERS 3 "both" 2 "right" 1 "left" 0 "none" ;
+VAL_ 1042 RIGHT_LINE 3 "orange" 2 "faded" 1 "solid" 0 "none" ;
 VAL_ 1553 UNITS 1 "km" 2 "miles" ;
 VAL_ 1556 TURN_SIGNALS 3 "none" 2 "right" 1 "left" ;
 VAL_ 1161 TSGN1 1 "speed sign" 0 "none" ;
